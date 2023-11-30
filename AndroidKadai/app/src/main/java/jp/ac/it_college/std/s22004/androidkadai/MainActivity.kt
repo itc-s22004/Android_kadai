@@ -118,9 +118,16 @@ fun Demo_ExposedDropdownMenuBox() {
     var resultText by remember {
         mutableStateOf("結果表示")
     }
-    var tempText by remember {
-        mutableStateOf("")
-    }
+    var tempText by remember { mutableStateOf("") }
+    var feelsText by remember { mutableStateOf("") }
+    var pressureText by remember { mutableStateOf("") }
+    var humidityText by remember { mutableStateOf("") }
+    var mainText by remember { mutableStateOf("") }
+    var descriptionText by remember { mutableStateOf("") }
+    var iconText by remember { mutableStateOf("") }
+    var speedText by remember { mutableStateOf("") }
+    var degText by remember { mutableStateOf("") }
+    var gustText by remember { mutableStateOf("") }
 
     // Composable な関数内でコルーチンを使用するためのコルーチンスコープ
     val scope = rememberCoroutineScope()
@@ -129,7 +136,12 @@ fun Demo_ExposedDropdownMenuBox() {
 
     val context = LocalContext.current
     val coffeeDrinks = arrayOf("Tokyo", "Chiba", "Okinawa", "Akita", "Osaka")
-//    val coffeeDrinks = arrayOf("")
+//    val coffeeDrinks = arrayOf(city3List[2130037]!!, city3List[2130658]!!)
+//    val coffeeDrinks = mutableListOf<String>()
+
+//    for (i in 0 until  city3List.size) {
+//        coffeeDrinks.add(city3List[])
+//    }
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
 
@@ -166,10 +178,17 @@ fun Demo_ExposedDropdownMenuBox() {
                             onClick = {
                                 selectedText = item
 //                            resultText = item
+
                                 expanded = false
 //                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                                 scope.launch {
-                                    resultText = Games.getGenerations(item).toString()
+                                    tempText = Games.getGenerations(item).list[0].main.temp.toString()
+                                    feelsText = Games.getGenerations(item).list[0].main.feels_like.toString()
+                                    pressureText = Games.getGenerations(item).list[0].main.pressure.toString()
+//                                    humidityText = Games.getGenerations(item).list[0].main.humidity.toString()
+//                                    mainText = Games.getGenerations(item).list[0].weather[0].main
+//                                    iconText = Games.getGenerations(item).list[0].weather[0].icon
+
                                 }
                             }
                         )
@@ -184,10 +203,13 @@ fun Demo_ExposedDropdownMenuBox() {
                 .padding(8.dp)
         ) {
             Column {
-                Text(text = resultText)
+                Text(text = "　　温度: $tempText")
+                Text(text = "体感温度: $feelsText")
+                Text(text = "　　気圧: $pressureText")
+//                Text(text = "　　湿気: $humidityText")
+//                Text(text = "　　天気: $mainText")
+//                Text(text = "アイコン: $iconText")
             }
         }
     }
-
-
 }

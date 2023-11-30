@@ -13,7 +13,6 @@ object ApiClient {
     /**
      * 全てのベースとなる URL
      */
-//    https://api.openweathermap.org/data/2.5/forecast?q=東京&appid=8aac46cba1cfc145a345c44a080791d6
     private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
     private val ktor = HttpClient(CIO) {
         engine {
