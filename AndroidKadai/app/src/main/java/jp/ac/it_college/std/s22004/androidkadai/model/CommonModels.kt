@@ -1,5 +1,6 @@
 package jp.ac.it_college.std.s22004.androidkadai.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -16,6 +17,7 @@ data class NamedApiResource(
     val main: MainResource,
     val weather: List<WeatherResource>,
     val wind: WindResource,
+    val snow: SnowResource? = null,
 
     val dt_txt: String,
 )
@@ -40,4 +42,9 @@ data class WindResource(
     val speed: Double,
     val deg: Int,
     val gust: Double
+)
+
+@Serializable
+data class SnowResource(
+    @SerialName("3h") val h3:Double?
 )

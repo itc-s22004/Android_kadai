@@ -62,6 +62,7 @@ fun Demo_ExposedDropdownMenuBox(modifier: Modifier = Modifier ,onStartClick: (St
     }
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
+    var citySelect by remember { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -107,7 +108,8 @@ fun Demo_ExposedDropdownMenuBox(modifier: Modifier = Modifier ,onStartClick: (St
 //                                    mainText = Games.getGenerations(item).list[0].weather[0].main
 //                                    iconText = Games.getGenerations(item).list[0].weather[0].icon
                                     dateText = Games.getGenerations(item).list[0].dt_txt
-
+//                                    dateText = Games.getGenerations(item).list[0].snow.toString()
+                                    citySelect = item
                                 }
                             }
                         )
@@ -134,7 +136,7 @@ fun Demo_ExposedDropdownMenuBox(modifier: Modifier = Modifier ,onStartClick: (St
         }
 //        ExposedDropdownMenu(
         Column {
-            Button(onClick = { onStartClick("Hokkaido") } ) {
+            Button(onClick = { onStartClick(citySelect) } ) {
                 Text(text = "3時間おき")
             }
         }
