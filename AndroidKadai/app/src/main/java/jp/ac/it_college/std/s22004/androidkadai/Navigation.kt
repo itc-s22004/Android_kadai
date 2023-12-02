@@ -55,8 +55,9 @@ fun WeatNavigation(
             composable(Destinations.StartWeat) {
                 Demo_ExposedDropdownMenuBox(
                     onStartClick = {
-//                        citySelect =
+                        citySelect = it
 
+//                        navController.navigate("${Destinations.Five}/$")
                         navController.navigate(Destinations.Five)
                     }
                 )
@@ -65,7 +66,7 @@ fun WeatNavigation(
             composable(Destinations.Five) {
 //                FiveWeather(item)
 //                FiveWeather(citySelect)
-                FiveWeather(cityName = "Hokkaido")
+                FiveWeatScene(cityName = citySelect)
             }
 
         }

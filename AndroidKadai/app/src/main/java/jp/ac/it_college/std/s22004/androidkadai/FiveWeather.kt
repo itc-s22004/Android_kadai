@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.Navigation
 import jp.ac.it_college.std.s22004.androidkadai.api.Games
 import jp.ac.it_college.std.s22004.androidkadai.ui.theme.AndroidKadaiTheme
 import kotlinx.coroutines.launch
@@ -27,7 +28,7 @@ fun FiveWeatScene(modifier: Modifier = Modifier, cityName: String) {
 @Composable
 fun FiveWeather(cityName: String) {
     var cityText by remember {
-        mutableStateOf("city")
+        mutableStateOf(cityName)
     }
     var dateText by remember {
         mutableStateOf("日付時間")
@@ -74,6 +75,6 @@ fun FiveWeather(cityName: String) {
 @Composable
 fun FiveWeatPreview() {
     AndroidKadaiTheme {
-        FiveWeatScene(cityName = "Hokkaido")
+        FiveWeatScene(cityName = "a")
     }
 }
