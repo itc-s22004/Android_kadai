@@ -73,9 +73,3 @@ fun WeatNavigation(
     }
 
 }
-
-suspend fun cityNameSelect(context: Context, cityName: String) {
-    withContext(Dispatchers.IO) {
-
-    }
-}

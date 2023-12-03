@@ -9,6 +9,7 @@ data class Weather(
     val message: Int?,
     val cnt: Int?,
     val list: List<NamedApiResource>,
+    val city: cityResource,
 )
 
 @Serializable
@@ -18,6 +19,7 @@ data class NamedApiResource(
     val weather: List<WeatherResource>,
     val wind: WindResource,
     val snow: SnowResource? = null,
+    val pop: Double,
 
     val dt_txt: String,
 )
@@ -47,4 +49,9 @@ data class WindResource(
 @Serializable
 data class SnowResource(
     @SerialName("3h") val h3:Double?
+)
+
+@Serializable
+data class cityResource(
+    val name: String
 )
