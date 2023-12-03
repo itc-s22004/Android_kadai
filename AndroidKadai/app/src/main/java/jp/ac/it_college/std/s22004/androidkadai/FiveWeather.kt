@@ -1,23 +1,35 @@
 package jp.ac.it_college.std.s22004.androidkadai
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import jp.ac.it_college.std.s22004.androidkadai.api.Games
 import jp.ac.it_college.std.s22004.androidkadai.ui.theme.AndroidKadaiTheme
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.Box as Box
 
 @Composable
 fun FiveWeatScene(modifier: Modifier = Modifier, cityName: String) {
@@ -26,77 +38,157 @@ fun FiveWeatScene(modifier: Modifier = Modifier, cityName: String) {
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FiveWeather(cityName: String) {
-    var resultText by remember { mutableStateOf(listOf("", "", "")) }
-    var result2Text by remember { mutableStateOf(listOf("", "", "")) }
 
-//    for (i in 0 until 20) {
-//        FiveList.add(Games.getGenerations(cityName).list[i].dt_txt)
-//    }
+    var dateText by remember { mutableStateOf("日付時間") }
+    var numText by remember { mutableStateOf("") }
 
-    var cityText by remember {
-        mutableStateOf(cityName)
-    }
-    var kakuText by remember {
-        mutableStateOf("都道府県確認")
-    }
-    var dateText by remember {
-        mutableStateOf("日付時間")
-    }
-    var weatherText by remember {
-        mutableStateOf("天気")
-    }
-    var buttonText by remember { mutableStateOf("Click me!") }
-    var showText by remember { mutableStateOf(false) }
+
+    var tempText by remember { mutableStateOf(0) }
+    var feelsText by remember { mutableStateOf(0) }
+    var pressureText by remember { mutableStateOf("") }
+    var humidityText by remember { mutableStateOf("") }
+    var mainText by remember { mutableStateOf("") }
+    var iconImg by remember { mutableStateOf("") }
+    var speedText by remember { mutableStateOf("") }
+    var degText by remember { mutableStateOf("") }
+    var gustText by remember { mutableStateOf("") }
+    var popText by remember { mutableStateOf("") }
+    var snowText by remember { mutableStateOf("") }
+
+
     val scope = rememberCoroutineScope()
 
-    Surface {
-        Column() {
-            Button(
-                onClick = {
-                    buttonText = "Button Clicked!"
-                    showText = true
-                    scope.launch {
-//                        resultText = Games.getGenerations(cityName).list[0].toString()
-                        val FiveDateList = mutableListOf<String>()
-                        val FiveWeatList = mutableListOf<String>()
-                        for (i in 0 until 3) {
-                            FiveDateList.add(Games.getGenerations(cityName).list[i].dt_txt)
-                            FiveWeatList.add(Games.getGenerations(cityName).list[i].weather[0].main)
-                        }
-                        resultText = FiveDateList
-                        result2Text = FiveWeatList
-//                        cityText = cityName
-//                        kakuText = Games.getGenerations(cityName).city.name
-//                        dateText = Games.getGenerations(cityName).list[0].dt_txt
-//                        weatherText = Games.getGenerations(cityName).list[0].weather[0].main
+
+    val coffeeDrinks = mutableListOf<String>()
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf("日付選ぶ") }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp)
+        ) {
+            Button(onClick = {
+                scope.launch {
+                    for (i in 0..39) {
+                        dateText = Games.getGenerations(cityName).list[i].dt_txt
+                        coffeeDrinks.add(dateText)
+                        numText = i.toString()
                     }
-                },
-                enabled = !showText
-            ) {
-                Text(text = "apiの取得結果")
-            }
-//            Text(text = "cityText : $cityText, 確認 : $kakuText")
-//            Text(text = "$dateText の天気： $weatherText ")
-//            for (i in 1..18) {
-
-            Text(text = "3時間ごとの天気    $cityText")
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(8.dp)
-//            ) {
-                for (i in 0..2) {
-                    Text(text = "${resultText[i]} : ${result2Text[i]}")
                 }
-//            }
+            }) {
+                Text(text = "最初にボタン押して")
 
-//            Text(text = result2Text)
-//            }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp)
+            ) {
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = {
+                        expanded = !expanded
+                    }
+                ) {
+                    TextField(
+                        value = selectedText,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier.menuAnchor()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        coffeeDrinks.forEachIndexed { index, element ->
+                            DropdownMenuItem(
+                                text = { Text(text = element) },
+                                onClick = {
+                                    selectedText = element
+                                    expanded = false
+                                    scope.launch {
+
+//                                        dateText = Games.getGenerations(cityName).list[index]
+                                        iconImg =
+                                            Games.getGenerations(cityName).list[index].weather[0].icon
+                                        mainText =
+                                            Games.getGenerations(cityName).list[index].weather[0].main
+                                        tempText =
+                                            Games.getGenerations(cityName).list[index].main.temp.toInt() - 273
+                                        feelsText =
+                                            Games.getGenerations(cityName).list[index].main.feels_like.toInt() - 273
+                                        humidityText =
+                                            Games.getGenerations(cityName).list[index].main.humidity.toString()
+                                        pressureText =
+                                            Games.getGenerations(cityName).list[index].main.pressure.toString()
+                                        speedText =
+                                            Games.getGenerations(cityName).list[index].wind.speed.toString()
+                                        degText =
+                                            Games.getGenerations(cityName).list[index].wind.deg.toString()
+                                        gustText =
+                                            Games.getGenerations(cityName).list[index].wind.gust.toString()
+                                        popText =
+                                            Games.getGenerations(cityName).list[index].pop.toString()
+                                        snowText =
+                                            Games.getGenerations(cityName).list[index].snow.toString()
+
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .fillMaxHeight(0.5f)
+                    .padding(start = 50.dp),
+            ) {
+                Text(text = numText)
+                Text(text = "$cityName の 天気",
+                    modifier = Modifier.padding(start = 40.dp),
+                    fontSize = 25.sp
+                        ) // 真ん中
+
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        "https://api.openweathermap.org/img/w/$iconImg.png"
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.size(122.dp)
+                )
+                Text(text = "　　天気: $mainText")
+                Text(text = "　　温度: $tempText")
+                Text(text = "体感温度: $feelsText")
+                Text(text = "　　湿気: $humidityText")
+                Text(text = "　　気圧: $pressureText")
+                Text(text = "　　風速: $speedText")
+                Text(text = "　　風向: $degText")
+                Text(text = "瞬間風速: $gustText")
+                Text(text = "降水確率: $popText")
+                Text(text = "　積雪量: $snowText")
+
+            }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -105,3 +197,4 @@ fun FiveWeatPreview() {
         FiveWeatScene(cityName = "")
     }
 }
+

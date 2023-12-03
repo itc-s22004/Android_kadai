@@ -51,7 +51,6 @@ fun Demo_ExposedDropdownMenuBox(
     var pressureText by remember { mutableStateOf("") }
     var humidityText by remember { mutableStateOf("") }
     var mainText by remember { mutableStateOf("") }
-    var descriptionText by remember { mutableStateOf("") }
     var iconImg by remember { mutableStateOf("") }
     var speedText by remember { mutableStateOf("") }
     var degText by remember { mutableStateOf("") }
@@ -62,11 +61,7 @@ fun Demo_ExposedDropdownMenuBox(
 
     var apiList by remember { mutableStateOf<Weather?>(null) }
 
-    // Composable な関数内でコルーチンを使用するためのコルーチンスコープ
     val scope = rememberCoroutineScope()
-//    val context = LocalContext.current
-
-
     val context = LocalContext.current
 //    val coffeeDrinks = arrayOf("Tokyo", "Chiba", "Okinawa", "Akita", "Osaka")
 //    val coffeeDrinks = arrayOf(city3List[2111834]!!, city3List[2111149]!!)
@@ -76,7 +71,6 @@ fun Demo_ExposedDropdownMenuBox(
         coffeeDrinks.add(cityList[i].name)
     }
     var expanded by remember { mutableStateOf(false) }
-//    var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
     var selectedText by remember { mutableStateOf("都道府県を選ぶ") }
     var citySelect by remember { mutableStateOf("") }
 
@@ -100,7 +94,6 @@ fun Demo_ExposedDropdownMenuBox(
                     onValueChange = {},
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    placeholder = { Text(text = "Placeholder")},
                     modifier = Modifier.menuAnchor()
                 )
 
@@ -113,10 +106,8 @@ fun Demo_ExposedDropdownMenuBox(
                             text = { Text(text = item) },
                             onClick = {
                                 selectedText = item
-//                            resultText = item
 
                                 expanded = false
-//                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                                 scope.launch {
                                     citySelect = item
 //                                    apiList = Games.getGenerations(item)
@@ -158,7 +149,12 @@ fun Demo_ExposedDropdownMenuBox(
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Column {
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .fillMaxHeight(0.5f)
+                    .padding(start = 50.dp),
+            ){
                 Text(text = "日付時間: $dateText")
                 Image(
                     painter = rememberAsyncImagePainter(
