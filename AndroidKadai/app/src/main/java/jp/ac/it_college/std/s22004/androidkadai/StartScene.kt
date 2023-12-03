@@ -3,13 +3,9 @@ package jp.ac.it_college.std.s22004.androidkadai
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,26 +22,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import jp.ac.it_college.std.s22004.androidkadai.api.Games
-import jp.ac.it_college.std.s22004.androidkadai.model.Weather
 import jp.ac.it_college.std.s22004.androidkadai.ui.theme.AndroidKadaiTheme
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.lazy.LazyColumn as LazyC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Demo_ExposedDropdownMenuBox(
-    modifier: Modifier = Modifier,
     onStartClick: (String) -> Unit = {}
 ) {
-
-    var resultText by remember {
-        mutableStateOf("結果表示")
-    }
     var tempText by remember { mutableStateOf(0) }
     var feelsText by remember { mutableStateOf(0) }
     var pressureText by remember { mutableStateOf("") }
@@ -59,12 +47,8 @@ fun Demo_ExposedDropdownMenuBox(
     var popText by remember { mutableStateOf("") }
     var snowText by remember { mutableStateOf("") }
 
-    var apiList by remember { mutableStateOf<Weather?>(null) }
 
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-//    val coffeeDrinks = arrayOf("Tokyo", "Chiba", "Okinawa", "Akita", "Osaka")
-//    val coffeeDrinks = arrayOf(city3List[2111834]!!, city3List[2111149]!!)
     val coffeeDrinks = mutableListOf<String>()
 
     for (i in 0 until cityList.size) {
@@ -110,19 +94,18 @@ fun Demo_ExposedDropdownMenuBox(
                                 expanded = false
                                 scope.launch {
                                     citySelect = item
-//                                    apiList = Games.getGenerations(item)
 
                                     dateText = Games.getGenerations(item).list[0].dt_txt
                                     iconImg = Games.getGenerations(item).list[0].weather[0].icon
                                     mainText = Games.getGenerations(item).list[0].weather[0].main
-                                    tempText = Games.getGenerations(item).list[0].main.temp.toInt() - 273
-                                    feelsText = Games.getGenerations(item).list[0].main.feels_like.toInt() - 273
+                                    tempText = (Games.getGenerations(item).list[0].main.temp - 273).toInt()
+                                    feelsText = (Games.getGenerations(item).list[0].main.feels_like - 273).toInt()
                                     humidityText = Games.getGenerations(item).list[0].main.humidity.toString()
                                     pressureText = Games.getGenerations(item).list[0].main.pressure.toString()
                                     speedText = Games.getGenerations(item).list[0].wind.speed.toString()
                                     degText = Games.getGenerations(item).list[0].wind.deg.toString()
                                     gustText = Games.getGenerations(item).list[0].wind.gust.toString()
-                                    popText = Games.getGenerations(item).list[0].pop.toString()
+                                    popText = (Games.getGenerations(item).list[0].pop * 100).toString()
                                     snowText = Games.getGenerations(item).list[0].snow.toString()
                                 }
                             })
@@ -130,19 +113,6 @@ fun Demo_ExposedDropdownMenuBox(
                 }
 
             }
-//            Box (
-//                modifier = Modifier
-//                    .wrapContentSize(Alignment.TopStart)
-//                    .fillMaxHeight()
-//                    .fillMaxWidth(),
-//            ) {
-//                LazyColumn {
-//                    item(40) {index ->
-//                        tempText =
-//                    }
-//                }
-//            }
-
         }
         Surface(
             modifier = Modifier
@@ -152,7 +122,6 @@ fun Demo_ExposedDropdownMenuBox(
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
-//                    .fillMaxHeight(0.5f)
                     .padding(start = 50.dp),
             ){
                 Text(text = "日付時間: $dateText")
@@ -164,19 +133,18 @@ fun Demo_ExposedDropdownMenuBox(
                     modifier = Modifier.size(122.dp)
                 )
                 Text(text = "　　天気: $mainText")
-                Text(text = "　　温度: $tempText")
-                Text(text = "体感温度: $feelsText")
-                Text(text = "　　湿気: $humidityText")
-                Text(text = "　　気圧: $pressureText")
-                Text(text = "　　風速: $speedText")
-                Text(text = "　　風向: $degText")
-                Text(text = "瞬間風速: $gustText")
-                Text(text = "降水確率: $popText")
-                Text(text = "　積雪量: $snowText")
+                Text(text = "　　温度: $tempText 度")
+                Text(text = "体感温度: $feelsText 度")
+                Text(text = "　　湿気: $humidityText ％")
+                Text(text = "　　気圧: $pressureText hPa")
+                Text(text = "　　風速: $speedText m/s")
+                Text(text = "　　風向: $degText kt")
+                Text(text = "瞬間風速: $gustText m/s")
+                Text(text = "降水確率: $popText %")
+                Text(text = "　積雪量: $snowText ")
 
             }
         }
-//        ExposedDropdownMenu(
         Column {
             Button(onClick = { onStartClick(citySelect) }) {
                 Text(text = "3時間おき")
@@ -190,6 +158,6 @@ fun Demo_ExposedDropdownMenuBox(
 @Composable
 fun MainScenePreview() {
     AndroidKadaiTheme {
-        Demo_ExposedDropdownMenuBox(Modifier.fillMaxSize())
+        Demo_ExposedDropdownMenuBox()
     }
 }

@@ -19,9 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,15 +120,14 @@ fun FiveWeather(cityName: String) {
                                     expanded = false
                                     scope.launch {
 
-//                                        dateText = Games.getGenerations(cityName).list[index]
                                         iconImg =
                                             Games.getGenerations(cityName).list[index].weather[0].icon
                                         mainText =
                                             Games.getGenerations(cityName).list[index].weather[0].main
                                         tempText =
-                                            Games.getGenerations(cityName).list[index].main.temp.toInt() - 273
+                                            (Games.getGenerations(cityName).list[index].main.temp - 273).toInt()
                                         feelsText =
-                                            Games.getGenerations(cityName).list[index].main.feels_like.toInt() - 273
+                                            (Games.getGenerations(cityName).list[index].main.feels_like -273).toInt()
                                         humidityText =
                                             Games.getGenerations(cityName).list[index].main.humidity.toString()
                                         pressureText =
@@ -142,7 +139,7 @@ fun FiveWeather(cityName: String) {
                                         gustText =
                                             Games.getGenerations(cityName).list[index].wind.gust.toString()
                                         popText =
-                                            Games.getGenerations(cityName).list[index].pop.toString()
+                                            (Games.getGenerations(cityName).list[index].pop * 100).toString()
                                         snowText =
                                             Games.getGenerations(cityName).list[index].snow.toString()
 
@@ -157,14 +154,14 @@ fun FiveWeather(cityName: String) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-//                    .fillMaxHeight(0.5f)
                     .padding(start = 50.dp),
             ) {
-                Text(text = numText)
-                Text(text = "$cityName の 天気",
+                Text(text = "---  $numText　個目 取得     ---")
+                Text(
+                    text = "$cityName の 天気",
                     modifier = Modifier.padding(start = 40.dp),
                     fontSize = 25.sp
-                        ) // 真ん中
+                )
 
                 Image(
                     painter = rememberAsyncImagePainter(
@@ -174,15 +171,15 @@ fun FiveWeather(cityName: String) {
                     modifier = Modifier.size(122.dp)
                 )
                 Text(text = "　　天気: $mainText")
-                Text(text = "　　温度: $tempText")
-                Text(text = "体感温度: $feelsText")
-                Text(text = "　　湿気: $humidityText")
-                Text(text = "　　気圧: $pressureText")
-                Text(text = "　　風速: $speedText")
-                Text(text = "　　風向: $degText")
-                Text(text = "瞬間風速: $gustText")
-                Text(text = "降水確率: $popText")
-                Text(text = "　積雪量: $snowText")
+                Text(text = "　　温度: $tempText 度")
+                Text(text = "体感温度: $feelsText 度")
+                Text(text = "　　湿気: $humidityText ％")
+                Text(text = "　　気圧: $pressureText hPa")
+                Text(text = "　　風速: $speedText m/s")
+                Text(text = "　　風向: $degText kt")
+                Text(text = "瞬間風速: $gustText m/s")
+                Text(text = "降水確率: $popText %")
+                Text(text = "　積雪量: $snowText ")
 
             }
         }
