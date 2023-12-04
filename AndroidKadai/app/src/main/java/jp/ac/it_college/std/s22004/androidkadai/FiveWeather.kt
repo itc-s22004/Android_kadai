@@ -125,9 +125,9 @@ fun FiveWeather(cityName: String) {
                                         mainText =
                                             Games.getGenerations(cityName).list[index].weather[0].main
                                         tempText =
-                                            (Games.getGenerations(cityName).list[index].main.temp - 273).toInt()
+                                            Games.getGenerations(cityName).list[index].main.temp.toInt()
                                         feelsText =
-                                            (Games.getGenerations(cityName).list[index].main.feels_like -273).toInt()
+                                            Games.getGenerations(cityName).list[index].main.feels_like.toInt()
                                         humidityText =
                                             Games.getGenerations(cityName).list[index].main.humidity.toString()
                                         pressureText =

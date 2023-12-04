@@ -11,6 +11,6 @@ object Games {
      * [NamedApiResourceList] 型で取得できる。
      */
     public suspend fun getGenerations(q: String): Weather {
-        return ApiClient.get("/forecast?q=$q&appid=$APP_ID").body()   //"/forecast?id=$q&appid=$APP_ID" Tokyoで取るとき
+        return ApiClient.get("/forecast?lang=ja&units=metric&q=$q&appid=$APP_ID").body()   //"/forecast?id=$q&appid=$APP_ID" Tokyoで取るとき
     }
 }

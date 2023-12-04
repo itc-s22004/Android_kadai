@@ -98,8 +98,8 @@ fun Demo_ExposedDropdownMenuBox(
                                     dateText = Games.getGenerations(item).list[0].dt_txt
                                     iconImg = Games.getGenerations(item).list[0].weather[0].icon
                                     mainText = Games.getGenerations(item).list[0].weather[0].main
-                                    tempText = (Games.getGenerations(item).list[0].main.temp - 273).toInt()
-                                    feelsText = (Games.getGenerations(item).list[0].main.feels_like - 273).toInt()
+                                    tempText = Games.getGenerations(item).list[0].main.temp.toInt()
+                                    feelsText = Games.getGenerations(item).list[0].main.feels_like.toInt()
                                     humidityText = Games.getGenerations(item).list[0].main.humidity.toString()
                                     pressureText = Games.getGenerations(item).list[0].main.pressure.toString()
                                     speedText = Games.getGenerations(item).list[0].wind.speed.toString()
